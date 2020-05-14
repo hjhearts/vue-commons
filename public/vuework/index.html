@@ -1,50 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <title>Message App</title>
     <style>
-        body > div {width: 500px; margin: 0 auto;}
-        textarea {width: 100%;}
-        ul {padding: 0 15px;}
+        [v-cloak]{display:none}
     </style>
 </head>
 <body>
     <div id="app" v-cloak>
         <message-list :items="messages" @delete="deleteMessage"></message-list>
         <form @submit.prevent="addMessage">
-            <textarea v-model="newMessage" placeholder="Leave Message"></textarea>
-            <div><button :disabled="addDisable" type="submit">ADD</button></div>
+            <textarea v-model="newMessage" v-focus></textarea>
+            <button type="submit">ADD</button>
         </form>
     </div>
     <script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
 <script type="module">
+    import "./directives/focus.directive.js"
     import MessageList from "./components/MessageList.js";
-    let vp = new Vue({
+    let va = new Vue({
         el:'#app',
         data:{
-            messages: [],
-            newMessage: ''
-        },
-        computed:{
-            addDisable() {
-                return this.newMessage.length >= 50 || this.messages.length >= 10;
-            }
+            messages:[],
+            newMessage:''
         },
         components:{
             MessageList
         },
         methods:{
-            addMessage(event){
-                if(!this.newMessage) return;
-                let now = new Date();
-                this.messages.push({text: this.newMessage, createdAt: now, id: now.getTime()});
-                this.newMessage = '';
+            addMessage(e){
+                this.messages.push({text:this.newMessage, createdAt:new Date()});
+                this.newMessage = ''
             },
             deleteMessage(message){
                 this.messages.splice(this.messages.indexOf(message), 1);
             }
         }
-
     })
 </script>
 </body>

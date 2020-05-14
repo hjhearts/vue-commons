@@ -17,13 +17,18 @@
         <div><button :disabled="addDisabled" type="submit">Add</button></div>
     </form>
 </div>
-<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script type="module">
     import './directives/focus.directive.js'
     import MessageList from './components/MessageList.js'
     import './filters/datetime.filter.js'
-    let vm = new Vue({
+    // import lifecycleLogger from './mixin/lifecycle-logger.mixin.js'
+    import LifeCycleLogger from "./plugins/lifecycle-logger.plugin.js"
+    Vue.use(LifeCycleLogger, {beforeMount: false});
+    window.vm = new Vue({
         el: '#app',
+        name:'MessageApp',
+        // mixins:[lifecycleLogger],
         data: {
             messages: [],
             newMessage: ''
